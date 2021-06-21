@@ -3,6 +3,7 @@ const Sentry = require('@sentry/node')
 const request = require('request')
 const AWS = require('aws-sdk')
 const postgres = require('postgres')
+const util = require('util')
 
 const { writeError } = require('./utils')
 const { checkBlacklist, checkDistinctAddresses, getParsedTransactions, MAX_DISTINCT_TO, generateBundleHash } = require('./bundle')
@@ -31,19 +32,12 @@ function convertBundleFormat(bundle) {
 }
 
 class Handler {
-  constructor(MINERS, SIMULATION_RPC, SQS_URL, PSQL_DSN, promClient) {
+  constructor(MINERS, promClient) {
     this.MINERS = MINERS
-    this.SIMULATION_RPC = SIMULATION_RPC
-    this.sql = postgres(PSQL_DSN)
-
     this.bundleCounter = new promClient.Counter({
       name: 'bundles',
       help: '# of bundles received'
     })
-    if (SQS_URL) {
-      this.sqs = new AWS.SQS({ apiVersion: '2012-11-05' })
-    }
-    this.SQS_URL = SQS_URL
   }
 
   async handleSendBundle(req, res) {
@@ -60,6 +54,7 @@ class Handler {
 
     try {
       const parsedTransactions = getParsedTransactions(txs)
+
       if (checkBlacklist(parsedTransactions)) {
         console.error(`txs was interacting with blacklisted address: ${txs}`)
         writeError(res, 400, 'blacklisted tx')

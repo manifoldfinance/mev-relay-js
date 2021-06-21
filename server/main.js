@@ -18,10 +18,10 @@ if (process.env.SENTRY_DSN) {
   })
 }
 
-const ALLOWED_METHODS = ['eth_sendBundle', 'eth_callBundle', 'flashbots_getUserStats']
+const ALLOWED_METHODS = ['eth_sendBundle']
 
 function help() {
-  console.log('node ./server/main.js minerUrls simulationRpc sqsUrl [PORT]')
+  console.log('node ./server/main.js minerUrls [PORT]')
 }
 
 function validPort(port) {
@@ -42,21 +42,7 @@ if (process.argv[2]) {
   MINERS = _.split(process.argv[2], ',')
 }
 
-const SIMULATION_RPC = process.argv[3]
-if (!SIMULATION_RPC) {
-  console.error('invalid simulation rpc provided')
-  help()
-  process.exit(1)
-}
-
-const SQS_URL = process.argv[4]
-if (!SIMULATION_RPC) {
-  console.error('invalid simulation rpc provided')
-  help()
-  process.exit(1)
-}
-
-const PORT = parseInt(_.get(process.argv, '[5]', '18545'))
+const PORT = parseInt(_.get(process.argv, '[3]', '18545'))
 
 if (!validPort(PORT)) {
   console.error(`invalid port specified for PORT: ${PORT}`)
@@ -167,12 +153,10 @@ app.use(async (req, res, next) => {
   next()
 })
 
-const handler = new Handler(MINERS, SIMULATION_RPC, SQS_URL, process.env.POSTGRES_DSN, promClient)
+const handler = new Handler(MINERS, promClient)
 
 app.use(async (req, res) => {
   try {
-    console.log(`request body: ${JSON.stringify(req.body)}`)
-
     if (req.body.method === 'eth_sendBundle') {
       await handler.handleSendBundle(req, res)
     } else if (req.body.method === 'eth_callBundle') {

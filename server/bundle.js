@@ -2,6 +2,7 @@ const { TransactionFactory } = require('@ethereumjs/tx')
 const _ = require('lodash')
 const Common = require('@ethereumjs/common').default
 const { arrayify, keccak256 } = require('ethers/lib/utils')
+const util = require('util')
 
 const commonOpts = new Common({ chain: process.env.CHAIN_NAME || 'mainnet' })
 
@@ -55,8 +56,7 @@ function generateBundleHash(txs) {
   let hashes = '0x'
   for (let i = 0; i < txs.length; i++) {
     const tx = txs[i]
-
-    hashes += tx.hash.slice(2)
+    hashes += tx.hash().toString('hex')
   }
 
   return keccak256(hashes)
