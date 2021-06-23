@@ -1,7 +1,11 @@
 const { ethers } = require('ethers')
 const _ = require('lodash')
+<<<<<<< HEAD
 const { arrayify, keccak256 } = require('ethers/lib/utils')
 const util = require('util')
+=======
+const { keccak256 } = require('ethers/lib/utils')
+>>>>>>> 0c66c58 (Fix lint)
 
 const BLACKLIST = [
   // OFAC banned addresses
