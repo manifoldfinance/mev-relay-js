@@ -1,10 +1,7 @@
-const { TransactionFactory } = require('@ethereumjs/tx')
+const { ethers } = require('ethers')
 const _ = require('lodash')
-const Common = require('@ethereumjs/common').default
 const { arrayify, keccak256 } = require('ethers/lib/utils')
 const util = require('util')
-
-const commonOpts = new Common({ chain: process.env.CHAIN_NAME || 'mainnet' })
 
 const BLACKLIST = [
   // OFAC banned addresses
@@ -45,11 +42,9 @@ function checkDistinctAddresses(txs) {
 }
 
 function getParsedTransactions(rawTxs) {
-  const parsedTransactions = []
-  rawTxs.forEach((rawTx) => {
-    parsedTransactions.push(TransactionFactory.fromSerializedData(arrayify(rawTx), { common: commonOpts }))
+  return rawTxs.map((rawTx) => {
+    return ethers.utils.parseTransaction(rawTx)
   })
-  return parsedTransactions
 }
 
 function generateBundleHash(txs) {
