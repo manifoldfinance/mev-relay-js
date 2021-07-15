@@ -5,7 +5,7 @@ const postgres = require('postgres')
 const util = require('util')
 
 const { writeError } = require('./utils')
-const { checkBlacklist, checkDistinctAddresses, getParsedTransactions, MAX_DISTINCT_TO, generateBundleHash } = require('./bundle')
+const { checkBlacklist, getParsedTransactions, generateBundleHash } = require('./bundle')
 
 const MIN_GAS_FLOOR = 42000
 function convertBundleFormat(bundle) {
@@ -75,10 +75,6 @@ class Handler {
       if (checkBlacklist(parsedTransactions)) {
         console.error(`txs was interacting with blacklisted address: ${txs}`)
         writeError(res, 400, 'blacklisted tx')
-        return
-      } else if (checkDistinctAddresses(parsedTransactions)) {
-        console.error(`bundle interacted with more than ${MAX_DISTINCT_TO} addresses`)
-        writeError(res, 400, `bundle interacted with more than ${MAX_DISTINCT_TO} addresses`)
         return
       }
       bundleHash = generateBundleHash(parsedTransactions)
@@ -162,10 +158,6 @@ class Handler {
       if (checkBlacklist(parsedTransactions)) {
         console.error(`bundle was interacting with blacklisted address: ${parsedTransactions}`)
         writeError(res, 400, 'blacklisted tx')
-        return
-      } else if (checkDistinctAddresses(parsedTransactions)) {
-        console.error(`bundle interacted with more than ${MAX_DISTINCT_TO} addresses`)
-        writeError(res, 400, `bundle interacted with more than ${MAX_DISTINCT_TO} addresses`)
         return
       }
     } catch (error) {
