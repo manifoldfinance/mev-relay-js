@@ -76,36 +76,25 @@ Example:
 
 - **blockNumber**: String, a hex encoded recent block number, in order to prevent replay attacks. Must be within 20 blocks of the current chain tip.
 
-Returns a quick summary of how this searcher is performing in the relay:
+Returns a quick summary of how this searcher is performing in the relay. Currently it is updated once every hour.
+
+Example response:
 
 ```json
 {
-  "signing_address": "0x123...",
-  "blocks_won_total": 283,
-  "bundles_submitted_total": 8503,
-  "bundles_error_total": 0,
-  "avg_gas_price_gwei": 73.43275884220039,
-  "blocks_won_last_7d": 283,
-  "bundles_submitted_last_7d": 8503,
-  "bundles_error_7d": 0,
-  "avg_gas_price_gwei_last_7d": 73.43275884220039,
-  "blocks_won_last_1d": 83,
-  "bundles_submitted_last_1d": 757,
-  "bundles_error_1d": 0,
-  "avg_gas_price_gwei_last_1d": 227.44116622595683,
-  "blocks_won_last_1h": 0,
-  "bundles_submitted_last_1h": 38,
-  "bundles_error_1h": 0,
-  "avg_gas_price_gwei_last_1h": 103.30447379959334,
-  "blocks_won_last_5m": 0,
-  "bundles_submitted_last_5m": 0,
-  "bundles_error_5m": 0,
-  "avg_gas_price_gwei_last_5m": null
+  "is_high_priority": true,
+  "all_time_miner_payments": "1280749594841588639",
+  "all_time_gas_simulated": "30049470846",
+  "last_7d_miner_payments": "1280749594841588639",
+  "last_7d_gas_simulated": "30049470846",
+  "last_1d_miner_payments": "142305510537954293",
+  "last_1d_gas_simulated": "2731770076"
 }
 ```
 
-- **blocks_won**: This number represents how many blocks were won by this user, according to the relay. This is **not** how many ended up on chain, this is just what our relay thinks would've won.
-- **avg_gas_price_gwei**: The adjusted gas price, averaged over all submissions by this user.
+- **is_high_priority**: boolean representing if this searcher has a high enough reputation to be in the high priority queue
+- **all_time_miner_payments**: The total amount paid to miners over all time
+- **all_time_gas_simulated**: The total amount of gas simulated across all bundles submitted to the relay. This is the actual gas used in simulations, not gas limit
 
 ## Authentication
 
