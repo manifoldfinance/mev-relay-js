@@ -1,5 +1,9 @@
 # Changelog
 
+# v3.0.1 (2021-07-28)
+
+- Nodejs packaging improvements
+
 ## v3.0.0 (2021-05-06)
 
 - Update for v0.2 core

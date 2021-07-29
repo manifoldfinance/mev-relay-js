@@ -38,8 +38,8 @@ if (!validPort(GETH_PORT)) {
 
 const app = express()
 app.use(bodyParser.json())
-
-app.use(function (req, res) {
+app.disable('x-powered-by')
+app.use((req, res) => {
   if (!req.body) {
     res.writeHead(400)
     res.end('invalid json body')
@@ -62,7 +62,7 @@ app.use(function (req, res) {
       body: JSON.stringify(req.body),
       headers: { 'Content-Type': 'application/json' }
     })
-    .on('error', function (e) {
+    .on('error', (e) => {
       res.writeHead(500)
       res.end(`error in proxy: ${e}`)
     })

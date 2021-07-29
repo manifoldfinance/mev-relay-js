@@ -72,7 +72,7 @@ class Handler {
     const bundle = convertBundleFormat(req.body.params)
     req.body.params = [bundle]
 
-    const txs = bundle.txs
+    const { txs } = bundle
     let bundleHash
 
     try {
@@ -97,12 +97,12 @@ class Handler {
       writeError(res, 400, 'block param must be a hex int')
       return
     }
-    const minTimestamp = bundle.minTimestamp
+    const { minTimestamp } = bundle
     if (minTimestamp && !(minTimestamp > 0)) {
       writeError(res, 400, 'minTimestamp must be an int')
       return
     }
-    const maxTimestamp = bundle.maxTimestamp
+    const { maxTimestamp } = bundle
     if (maxTimestamp && !(maxTimestamp > 0)) {
       writeError(res, 400, 'maxTimestamp must be an int')
       return
@@ -157,7 +157,7 @@ class Handler {
     bundle.coinbase = process.env.COINBASE_ADDRESS
     req.body.params = [bundle]
 
-    const txs = bundle.txs
+    const { txs } = bundle
     const parsedTransactions = getParsedTransactions(txs)
     try {
       if (checkBlacklist(parsedTransactions)) {

@@ -6,10 +6,10 @@ const rateLimit = require('express-rate-limit')
 const _ = require('lodash')
 const Sentry = require('@sentry/node')
 const promBundle = require('express-prom-bundle')
-const { Handler } = require('./handlers')
-const { writeError } = require('./utils')
 const { verifyMessage, id } = require('ethers/lib/utils')
 const { constants } = require('ethers')
+const { Handler } = require('./handlers')
+const { writeError } = require('./utils')
 
 if (process.env.SENTRY_DSN) {
   console.log('initializing sentry')

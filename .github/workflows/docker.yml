@@ -13,4 +13,4 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Build image
-        run: docker build -t flashbots/mev-relay-ci .
+        run: DOCKER_BUILDKIT=1 docker build -t flashbots/mev-relay-ci .

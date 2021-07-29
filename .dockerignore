@@ -1,0 +1,6 @@
+.github/
+.git/
+# miner is ignored as dockerfile only runs server
+miner/
+# quay.io needs Dockerfile, comment it out if using that
+Dockerfile
