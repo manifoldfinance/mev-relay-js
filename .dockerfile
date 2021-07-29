@@ -1,0 +1,4 @@
+miner/
+.github/
+Dockerfile
+.git/
