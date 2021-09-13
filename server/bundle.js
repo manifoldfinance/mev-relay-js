@@ -41,7 +41,7 @@ function generateBundleHash(txs) {
   let hashes = '0x';
   for (let i = 0; i < txs.length; i++) {
     const tx = txs[i];
-    hashes += tx.hash.slice(2)
+    hashes += tx.hash.slice(2);
   }
 
   return keccak256(hashes);
